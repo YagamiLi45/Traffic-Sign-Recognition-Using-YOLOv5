@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Image Preview and Upload</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+    }
+
+    .container {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      flex-direction: column;
+      height: 100vh;
+      padding: 20px;
+      background-color: black;
+      color: whitesmoke;
+    }
+
+    .horizontal-container{
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .box {
+      flex: 1;
+      padding: 20px;
+      background-color: #f0f0f0;
+      border-radius: 10px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+      color: black;
+      text-align: center; /* Center text within the box */
+    }
+
+    .box img {
+      max-width: 100%;
+      border-radius: 5px;
+    margin-bottom: 30px;
+      display: block;
+      margin: 0 auto; /* Center image within the box */
+    }
+
+    input[type="file"] {
+      display: none;
+    }
+
+    .custom-file-upload {
+      border: 1px solid #ccc;
+      display: inline-block;
+      padding: 6px 12px;
+      cursor: pointer;
+      border-radius: 5px;
+      background-color: #fff;
+    }
+
+    .main__btn {
+      font-size: 1.8rem;
+      background: #833ab4;
+      background: -webkit-linear-gradient(to right, #fcb045, #fd1d1d, #833ab4);
+      background: linear-gradient(to right, #fcb045, #fd1d1d, #833ab4);
+      padding: 20px 60px;
+      border: none;
+      border-radius: 4px;
+      margin-top: 2rem;
+      cursor: pointer;
+      position: relative;
+      transition: all 0.35s;
+      outline: none;
+    }
+    
+    .main__btn a {
+      position: relative;
+      z-index: 2;
+      color: #fff;
+      text-decoration: none;
+    }
+    
+    .main__btn:after {
+      position: absolute;
+      content: '';
+      top: 0;
+      left: 0;
+      width: 0;
+      height: 100%;
+      background: #ff1ead;
+      transition: all 0.35s;
+      border-radius: 4px;
+    }
+    
+    .main__btn:hover {
+      color: #fff;
+    }
+    
+    .main__btn:hover:after {
+      width: 100%;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="horizontal-container">
+      <div class="box left-box">
+        <h2>Image Preview</h2>
+        <img class="uploaded-image" id="uploaded-image" src="#" alt="Uploaded Image">
+      </div>
+      <div class="box middle-box">
+        <h2>Upload Image</h2>
+        <label for="file-upload" class="custom-file-upload">Choose File</label>
+        <input type="file" id="file-upload">
+      </div>
+      
+      <div class="box right-box" style="margin: 30px;">
+        <h2>Predicted Image</h2>
+        <img class="predicted-image" id="predicted-image" src="#" alt="Predicted Image">
+      </div>
+    </div>
+    
+    <div>
+      <a class="main__btn">Predict</a>
+    </div>
+  </div>
+ 
+
+
+  <script>
+    document.getElementById("file-upload").onchange = function (event) {
+      var reader = new FileReader();
+      reader.onload = function () {
+        var uploadedImage = document.getElementById('uploaded-image');
+        uploadedImage.src = reader.result;
+      };
+      reader.readAsDataURL(event.target.files[0]);
+    };
+  
+    document.querySelector(".main__btn").onclick = function () {
+      var fileInput = document.getElementById("file-upload");
+      var file = fileInput.files[0];
+  
+      var formData = new FormData();
+      formData.append("file", file);
+  
+      fetch("/predict", {
+        method: "POST",
+        body: formData
+      })
+        .then(response => response.json())
+        .then(data => {
+          var predictedImage = document.getElementById('predicted-image');
+          predictedImage.src = 'data:image/jpeg;base64,' + data.result_image;
+        })
+        .catch(error => console.error('Error:', error));
+    };
+  </script>
+  
+
+</body>
+</html>

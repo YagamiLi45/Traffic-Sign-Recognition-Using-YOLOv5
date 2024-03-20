@@ -1,0 +1,6 @@
+train: \Dataset\train
+valid: \Dataset\valid
+
+nc: 36
+names: ['Cycle Zone', 'Danger Ahead', 'Deer Zone', 'End of Right Road -Go straight-', 'Give Way', 'Go Left or Straight', 'Go Right or Straight', 'Go Straight', 'Huddle Road', 'Left Curve Ahead', 'Left Sharp Curve', 'No Entry', 'No Over Taking', 'No Over Taking Trucks', 'No Stopping', 'No Waiting', 'Pedestrian', 'Right Curve Ahead', 'Right Sharp Curve', 'Road Work', 'RoundAbout', 'Slippery Road', 'Snow Warning Sign', 'Speed Limit 100', 'Speed Limit 120', 'Speed Limit 20', 'Speed Limit 30', 'Speed Limit 50', 'Speed Limit 60', 'Speed Limit 70', 'Speed Limit 80', 'Stop', 'Traffic Signals Ahead', 'Truck Sign', 'Turn Left', 'Turn Right']
+
